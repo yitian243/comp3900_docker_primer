@@ -7,7 +7,19 @@ services:
   # TODO: add your code here (delete this line and follow the indent conventions)
   app:
     # TODO: you will need to add to this
+    build: ./backend
     environment:
       - REDIS_HOST=redis
+    ports:
+      - "9900:9900" # mapping the external port 5555 to container's internal port 5000 (on your computer use localhost:5555)
+    depends_on:
+      - redis
   frontend:
     # TODO: you will need to add to this
+    build: ./frontend
+    ports: 
+      - "3901:3000"
+    environment:
+      - REACT_APP_BACKEND_URL=http://app:9900 # this defines the URL the frontend makes requests to
+    depends_on:
+      - app
